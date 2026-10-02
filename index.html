@@ -1,19 +1,64 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>الصفحة الرئيسية</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        a { font-size: 1.5em; text-decoration: none; color: #0066cc; }
-        a:hover { text-decoration: underline; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدارية مليون صورة سيلفي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>مرحبًا بكم في موقعنا</h1>
-    <p>انقر على الرابط أدناه لزيارة شبكة الجدارية.</p>
-    <a href="grid.html">شبكة الجدارية</a>
+    <!-- Header -->
+    <header class="header">
+        <h1>جدارية مليون صورة سيلفي</h1>
+        <div class="controls">
+            <button id="langBtn" aria-label="Toggle language">🇸🇾/🇬🇧</button>
+            <button id="zoomInBtn" aria-label="Zoom In">+</button>
+            <button id="zoomOutBtn" aria-label="Zoom Out">-</button>
+            <button id="selectionBtn" aria-label="Selection Mode">تحديد</button>
+        </div>
+    </header>
+
+    <!-- Canvas Container -->
+    <div id="canvasContainer" class="canvas-container">
+        <canvas id="wallCanvas" width="10000" height="10000"></canvas>
+    </div>
+
+    <!-- Statistics Bar -->
+    <section id="statsBar" class="stats-bar">
+        <span id="remainingSquares"></span>
+        <span id="bookedSquares"></span>
+        <span id="approvedPhotos"></span>
+    </section>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>حجز مربعات</h2>
+            <form id="bookingForm">
+                <label>الاسم: <input type="text" name="name" required></label>
+                <label>رقم الهاتف: <input type="tel" name="phone" required></label>
+                <label>رابط الحساب: <input type="url" name="profileUrl" required></label>
+                <label>سيلفي: <input type="file" name="selfie" accept="image/*" required></label>
+                <label>إيصال الدفع: <input type="file" name="receipt" accept="image/*" required></label>
+                <label>طريقة الدفع:
+                    <select name="paymentMethod" required>
+                        <option value="shamCash">شام كاش</option>
+                        <option value="usdtTRC20">USDT TRC20</option>
+                    </select>
+                </label>
+                <button type="submit">إرسال الطلب</button>
+                <button type="button" id="cancelBtn">إلغاء</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs (use your own config) -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
-```
