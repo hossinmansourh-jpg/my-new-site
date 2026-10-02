@@ -1,71 +1,167 @@
-/* Basic reset */
-* {
+```css
+/* Reset and box sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-/* Dark background */
-body {
-    background-color: #121212;
-    color: #f0f0f0;
-    font-family: Arial, sans-serif;
+html, body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #ffffff;
+    background: #0d0d0d;
+    overflow-x: hidden;   /* prevent horizontal scrolling */
     min-height: 100vh;
+}
+
+/* Overlay (loading state) */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: #14141c; /* dark gray */
+    z-index: 1000;      /* high priority */
     display: flex;
-    flex-direction: column;
-}
-
-/* Header styling */
-header {
-    padding: 20px;
-    text-align: center;
-    background: #1e1e1e;
-}
-
-header h1 {
-    margin-bottom: 10px;
-    font-size: 2rem;
-}
-
-/* Simple navigation */
-nav ul {
-    list-style: none;
-    display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 15px;
 }
 
-nav a {
-    color: #f0f0f0;
-    text-decoration: none;
-    padding: 5px 10px;
+.overlay .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ffffff;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Header */
+.site-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: #1e1e27;
+    z-index: 100;
+    position: sticky;
+    top: 0;
+}
+
+.site-header .logo h1 {
+    font-size: 2.5rem;
+    line-height: 1.1;
+}
+
+.site-header .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.lang-toggle {
+    padding: 0.5rem 1rem;
+    background: #3498db;
+    border: none;
     border-radius: 4px;
-    transition: background 0.3s;
+    color: #fff;
+    cursor: pointer;
 }
 
-nav a:hover {
-    background: #ffd700;
-    color: #121212;
+.digital-badge {
+    background: #ff9800;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
 }
 
-/* Grid container */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-    padding: 20px;
-    flex-grow: 1;
+/* Main content */
+.main-content {
+    padding: 2rem;
 }
 
-/* Grid items */
-.grid-item {
-    background-color: #d3d3d3;
-    height: 120px;
+#mosaicCanvas {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+    margin: 0 auto 2rem;
+    border: 2px solid #fff;
+}
+
+.gallery {
+    margin-top: 2rem;
+}
+
+.gallery h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.gallery p {
+    font-size: 1.1rem;
+}
+
+/* Modal (example) */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;   /* modal above everything else */
+}
+
+.modal-content {
+    background: #222;
+    padding: 2rem;
     border-radius: 8px;
-    transition: background 0.3s, transform 0.3s;
+    color: #fff;
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
 }
 
-.grid-item:hover {
-    background-color: #ffd700;
-    transform: scale(1.05);
+#closeModal {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: #e74c3c;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
 }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .site-header .logo h1 {
+        font-size: 2rem;
+    }
+    .lang-toggle, .digital-badge {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .site-header .logo h1 {
+        font-size: 1.8rem;
+    }
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .digital-badge {
+        font-size: 0.7rem;
+    }
+}
+```
