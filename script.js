@@ -1,38 +1,27 @@
-```javascript
-// إنشاء شبكة مربعات
-const gridContainer = document.getElementById('grid');
-const squares = [];
-const rows = 4;          // عدد الصفوف
-const cols = 4;          // عدد الأعمدة
-const defaultColor = '#ddd';
+```js
+// Hide the loading overlay once the page (including images) has fully loaded
+window.addEventListener('load', () => {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.style.display = 'none';
+    }
 
-for (let r = 0; r < rows; r++) {
-  for (let c = 0; c < cols; c++) {
-    const square = document.createElement('div');
-    square.className = 'square';
-    square.style.background = defaultColor;
-    square.addEventListener('click', () => {
-      square.style.background = randomColor();
-    });
-    gridContainer.appendChild(square);
-    squares.push(square);
-  }
-}
-
-// دالة لتوليد لون عشوائي
-function randomColor() {
-  const hex = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += hex[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
-
-// زر "مسح" لإعادة تعيين الشبكة
-document.getElementById('reset').addEventListener('click', () => {
-  squares.forEach(square => {
-    square.style.background = defaultColor;
-  });
+    // Optional: Initialize canvas or other heavy components after load
+    const canvas = document.getElementById('mosaicCanvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        // Example: draw a placeholder background
+        ctx.fillStyle = '#555';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 });
+
+// Simple modal toggle for demonstration
+const modal = document.getElementById('exampleModal');
+const closeBtn = document.getElementById('closeModal');
+if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        if (modal) modal.style.display = 'none';
+    });
+}
 ```
