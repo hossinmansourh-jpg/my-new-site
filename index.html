@@ -1,7 +1,88 @@
-```html
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8">
-  <title>جدارية مليون سيلفي</title>
-  <link
+<meta charset="UTF-8">
+<title data-lang="title">Network Grid</title>
+<style>
+  :root {
+    --bg-dark: #1a1a1a;
+    --bg-day: #f5f5dc;
+    --text-gold: #d4af37;
+    --square-dim: 12px;
+    --square-dark: #2c3e50;
+  }
+  html, body {margin:0;padding:0;height:100%;overflow:hidden;background:var(--bg-dark);color:var(--text-gold);font-family:Arial,sans-serif;}
+  #controls {position:fixed;top:10px;left:10px;z-index:10;}
+  button{margin-right:8px;padding:6px 12px;background:transparent;border:1px solid var(--text-gold);color:var(--text-gold);cursor:pointer;}
+  button:hover{background:var(--text-gold);color:#000;}
+  #gridCanvas {display:block;}
+  .day-mode {background:var(--bg-day);color:var(--text-gold);}
+  .day-mode button{border-color:var(--text-gold);color:var(--text-gold);}
+  .day-mode button:hover{background:var(--text-gold);color:#000;}
+</style>
+</head>
+<body>
+<div id="controls">
+  <button id="langBtn" data-lang="lang">العربية</button>
+  <button id="modeBtn" data-lang="mode">الوضع الليلي</button>
+</div>
+<canvas id="gridCanvas"></canvas>
+
+<script>
+  const canvas=document.getElementById('gridCanvas');
+  const ctx=canvas.getContext('2d');
+  const langBtn=document.getElementById('langBtn');
+  const modeBtn=document.getElementById('modeBtn');
+  const texts={
+    en:{title:"Network Grid",lang:"العربية",mode:"Night Mode"},
+    ar:{title:"شبكة مربعات",lang:"English",mode:"الوضع النهاري"}
+  };
+  let currentLang='en';
+  let night=true;
+  function setLang(l){
+    currentLang=l;
+    document.title=texts[l].title;
+    langBtn.textContent=texts[l].lang;
+    modeBtn.textContent=texts[l].mode;
+  }
+  langBtn.addEventListener('click',()=>{setLang(currentLang==='en'?'ar':'en');});
+  modeBtn.addEventListener('click',()=>{
+    night=!night;
+    document.body.classList.toggle('day-mode',!night);
+    modeBtn.textContent=texts[currentLang].mode;
+  });
+  setLang(currentLang);
+  // Resize canvas to fit window
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  window.addEventListener('resize',resize);
+  resize();
+  // Draw 1,000,000 squares (1000x1000 grid)
+  const cols=1000;
+  const rows=1000;
+  const dim=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--square-dim'));
+  function draw(){
+    ctx.fillStyle=night?getComputedStyle(document.documentElement).getPropertyValue('--square-dark'):getComputedStyle(document.documentElement).getPropertyValue('--square-dark');
+    ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--text-gold');
+    for(let y=0;y<rows;y++){
+      for(let x=0;x<cols;x++){
+        const px=x*dim;
+        const py=y*dim;
+        ctx.fillRect(px,py,dim,dim);
+        ctx.strokeRect(px,py,dim,dim);
+      }
+    }
+  }
+  // Use requestAnimationFrame to avoid blocking
+  let startTime=performance.now();
+  function renderLoop(){
+    const now=performance.now();
+    if(now-startTime<2000){ // draw for 2 seconds, then stop
+      draw();
+      startTime=now;
+      requestAnimationFrame(renderLoop);
+    }
+  }
+  requestAnimationFrame(renderLoop);
+</script>
+</body>
+</html>
