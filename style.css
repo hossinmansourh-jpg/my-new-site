@@ -1,20 +1,71 @@
-#gallery {
-  padding: 20px;
-  text-align: center;
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-#gallery h2 {
-  margin-bottom: 20px;
+
+/* Dark background */
+body {
+    background-color: #121212;
+    color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
+/* Header styling */
+header {
+    padding: 20px;
+    text-align: center;
+    background: #1e1e1e;
+}
+
+header h1 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+/* Simple navigation */
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+nav a {
+    color: #f0f0f0;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+nav a:hover {
+    background: #ffd700;
+    color: #121212;
+}
+
+/* Grid container */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    flex-grow: 1;
 }
-.grid img {
-  width: 100%;
-  height: auto;
-  transition: transform 0.3s ease;
+
+/* Grid items */
+.grid-item {
+    background-color: #d3d3d3;
+    height: 120px;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.3s;
 }
-.grid img:hover {
-  transform: scale(1.1);
+
+.grid-item:hover {
+    background-color: #ffd700;
+    transform: scale(1.05);
 }
