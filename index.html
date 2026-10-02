@@ -1,33 +1,40 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>تواصل معنا</title>
+    <title>مثال على التمرير السلس</title>
     <style>
-        body{font-family: Arial, sans-serif; padding:20px;}
-        section{max-width:600px; margin:auto;}
-        form{display:flex; flex-direction:column;}
-        label{margin-top:10px; font-weight:bold;}
-        input, textarea{padding:8px; margin-top:5px; border:1px solid #ccc; border-radius:4px;}
-        button{margin-top:15px; padding:10px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer;}
-        button:hover{background:#0056b3;}
+        body { margin: 0; font-family: Arial, sans-serif; }
+        nav { position: fixed; top: 0; left: 0; right: 0; background: #333; padding: 10px; }
+        nav a { color: #fff; margin: 0 15px; text-decoration: none; }
+        section { height: 100vh; padding-top: 60px; box-sizing: border-box; }
+        #section1 { background: #f4f4f4; }
+        #section2 { background: #e2e2e2; }
+        #section3 { background: #d0d0d0; }
     </style>
 </head>
 <body>
-    <section>
-        <h2>تواصل معنا</h2>
-        <form action="#" method="post">
-            <label for="name">الاسم</label>
-            <input type="text" id="name" name="name" required>
+    <nav>
+        <a href="#section1">القسم 1</a>
+        <a href="#section2">القسم 2</a>
+        <a href="#section3">القسم 3</a>
+    </nav>
 
-            <label for="email">البريد الإلكتروني</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="message">الرسالة</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-
-            <button type="submit">إرسال</button>
-        </form>
+    <section id="section1">
+        <h1>القسم 1</h1>
+        <p>محتوى القسم الأول.</p>
     </section>
+
+    <section id="section2">
+        <h1>القسم 2</h1>
+        <p>محتوى القسم الثاني.</p>
+    </section>
+
+    <section id="section3">
+        <h1>القسم 3</h1>
+        <p>محتوى القسم الثالث.</p>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>
