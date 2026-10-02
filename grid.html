@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>مصفوفة 100x100</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+        }
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(100, 10px);
+            grid-template-rows: repeat(100, 10px);
+            width: 1000px;
+            height: 1000px;
+            gap: 0; /* No gaps between cells */
+        }
+        .cell {
+            width: 10px;
+            height: 10px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            transition: background-color 0.2s;
+        }
+        .cell:hover {
+            background-color: #ffa500;
+        }
+    </style>
+</head>
+<body>
+    <div id="grid"></div>
+    <script>
+        const grid = document.getElementById('grid');
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < 10000; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            fragment.appendChild(cell);
+        }
+        grid.appendChild(fragment);
+    </script>
+</body>
+</html>
