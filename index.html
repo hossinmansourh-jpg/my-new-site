@@ -1,33 +1,21 @@
+```html
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <title>شبكة جدارية مليون سيلفي</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>تغيير ألوان المربعات</title>
+<style>
+  body{font-family:Arial,sans-serif;text-align:center;margin:0;padding:0;}
+  #grid{display:grid;grid-template-columns:repeat(4,60px);grid-gap:5px;margin:20px auto;}
+  .square{width:60px;height:60px;background:#ddd;cursor:pointer;transition:background 0.3s;}
+  #reset{margin-top:10px;padding:5px 15px;font-size:16px;cursor:pointer;}
+</style>
 </head>
 <body>
-    <header>
-        <h1>شبكة جدارية مليون سيلفي</h1>
-        <nav>
-            <ul>
-                <li><a href="#">الرئيسية</a></li>
-                <li><a href="#">المنظر</a></li>
-                <li><a href="#">اتصل</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="grid">
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-        </section>
-    </main>
+<h1>تغيير ألوان المربعات</h1>
+<div id="grid"></div>
+<button id="reset">مسح</button>
+<script src="script.js"></script>
 </body>
 </html>
+```
