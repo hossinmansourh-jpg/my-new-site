@@ -1,114 +1,58 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>شبكة قابل للتمرير وتكبير/تصغير مخصصة</title>
+<title>Grid of One Million Squares</title>
 <style>
-    :root {
-        --square-size: 100px;          /* حجم المربع الأساسي */
-        --gap-size: 4px;               /* المسافة بين المربعات */
-    }
-
-    body {
-        font-family: 'Arial', sans-serif;
-        background:#f0f4f7;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        padding:20px;
-    }
-
-    h1 {
-        color:#2c3e50;
-        margin-bottom:20px;
-    }
-
-    .controls {
-        margin-bottom:15px;
-    }
-    .controls button {
-        background:#3498db;
-        color:white;
-        border:none;
-        border-radius:5px;
-        padding:10px 15px;
-        margin:0 5px;
-        font-size:16px;
-        cursor:pointer;
-        transition:background 0.2s ease;
-    }
-    .controls button:hover {
-        background:#2980b9;
-    }
-    .grid-container {
-        width:800px;
-        height:600px;
-        background:#ecf0f1;
-        border:1px solid #bdc3c7;
-        overflow:auto;           /* قابل للتمرير */
-        display:flex;
-        align-items:flex-start;
-    }
-    .grid {
-        display:flex;
-        flex-wrap:wrap;
-    }
-    .grid-item {
-        width:var(--square-size);
-        height:var(--square-size);
-        margin:var(--gap-size);
-        background:#e74c3c;
-        border:2px solid #c0392b;
-        border-radius:3px;
-        transition:width 0.2s, height 0.2s, background 0.2s;
-    }
-    /* ألوان مميزة عند التمرير */
-    .grid-item:hover {
-        background:#c0392b;
-    }
+  body, html {margin:0; padding:0; width:100%; height:100%; overflow:hidden;}
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 20px);
+    grid-auto-rows: 20px;
+    grid-gap: 2px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background:#ecf0f1;
+  }
+  .square {
+    width: 20px;
+    height: 20px;
+    background:#3498db;
+    box-sizing: border-box;
+  }
 </style>
 </head>
 <body>
-
-<h1>شبكة قابل للتمرير مع تكبير/تصغير المربعات</h1>
-
-<div class="controls">
-    <button id="zoomInBtn">تكبير ⊕</button>
-    <button id="zoomOutBtn">تصغير ⊖</button>
-</div>
-
-<div class="grid-container">
-    <div class="grid" id="grid">
-        <!-- المربعات ستُولد برمجياً -->
-    </div>
-</div>
-
+<div id="grid"></div>
 <script>
-    const grid = document.getElementById('grid');
-    const zoomInBtn = document.getElementById('zoomInBtn');
-    const zoomOutBtn = document.getElementById('zoomOutBtn');
-    const rootStyle = getComputedStyle(document.documentElement);
+  (function() {
+    const TOTAL = 1_000_000;
+    const BATCH = 5_000;
+    let created = 0;
+    const container = document.getElementById('grid');
+    let fragment = document.createDocumentFragment();
 
-    // إنشاء شبكة 10x10 مربعات
-    const rows = 10, cols = 10;
-    for (let i = 0; i < rows * cols; i++) {
+    function createBatch() {
+      for (let i = 0; i < BATCH && created < TOTAL; i++) {
         const div = document.createElement('div');
-        div.className = 'grid-item';
-        grid.appendChild(div);
+        div.className = 'square';
+        fragment.appendChild(div);
+        created++;
+      }
+      container.appendChild(fragment);
+      fragment = document.createDocumentFragment();
+      if (created < TOTAL) {
+        // Yield to keep UI responsive
+        setTimeout(createBatch, 0);
+      } else {
+        console.log('Created', TOTAL, 'squares.');
+      }
     }
 
-    // دالة لتعديل حجم المربع
-    function setSquareSize(delta) {
-        let current = parseInt(rootStyle.getPropertyValue('--square-size'));
-        let newSize = current + delta;
-        if (newSize < 30) newSize = 30;      // الحد الأدنى
-        if (newSize > 200) newSize = 200;    // الحد الأقصى
-        document.documentElement.style.setProperty('--square-size', `${newSize}px`);
-    }
-
-    zoomInBtn.addEventListener('click', () => setSquareSize(20));
-    zoomOutBtn.addEventListener('click', () => setSquareSize(-20));
+    // Start after page load
+    window.addEventListener('load', createBatch);
+  })();
 </script>
-
 </body>
 </html>
