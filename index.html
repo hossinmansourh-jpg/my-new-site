@@ -1,40 +1,24 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>مثال على التمرير السلس</title>
-    <style>
-        body { margin: 0; font-family: Arial, sans-serif; }
-        nav { position: fixed; top: 0; left: 0; right: 0; background: #333; padding: 10px; }
-        nav a { color: #fff; margin: 0 15px; text-decoration: none; }
-        section { height: 100vh; padding-top: 60px; box-sizing: border-box; }
-        #section1 { background: #f4f4f4; }
-        #section2 { background: #e2e2e2; }
-        #section3 { background: #d0d0d0; }
-    </style>
+    <title>Sample Site</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>
-        <a href="#section1">القسم 1</a>
-        <a href="#section2">القسم 2</a>
-        <a href="#section3">القسم 3</a>
-    </nav>
-
-    <section id="section1">
-        <h1>القسم 1</h1>
-        <p>محتوى القسم الأول.</p>
-    </section>
-
-    <section id="section2">
-        <h1>القسم 2</h1>
-        <p>محتوى القسم الثاني.</p>
-    </section>
-
-    <section id="section3">
-        <h1>القسم 3</h1>
-        <p>محتوى القسم الثالث.</p>
-    </section>
-
-    <script src="script.js"></script>
+    <header>
+        <h1>مرحبا بكم في الموقع</h1>
+    </header>
+    <main>
+        <p>محتوى الصفحة الرئيسي</p>
+    </main>
+    <footer>
+        <p>© 2026 شركتك. جميع الحقوق محفوظة.</p>
+        <div class="social">
+            <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">📘</a>
+            <a href="https://twitter.com" target="_blank" aria-label="Twitter">🐦</a>
+            <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">📸</a>
+        </div>
+    </footer>
 </body>
 </html>
