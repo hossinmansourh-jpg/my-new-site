@@ -1,58 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-<meta charset="UTF-8">
-<title>Grid of One Million Squares</title>
-<style>
-  body, html {margin:0; padding:0; width:100%; height:100%; overflow:hidden;}
-  #grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 20px);
-    grid-auto-rows: 20px;
-    grid-gap: 2px;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background:#ecf0f1;
-  }
-  .square {
-    width: 20px;
-    height: 20px;
-    background:#3498db;
-    box-sizing: border-box;
-  }
-</style>
+    <meta charset="UTF-8">
+    <title>شبكة جدارية مليون سيلفي</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="grid"></div>
-<script>
-  (function() {
-    const TOTAL = 1_000_000;
-    const BATCH = 5_000;
-    let created = 0;
-    const container = document.getElementById('grid');
-    let fragment = document.createDocumentFragment();
-
-    function createBatch() {
-      for (let i = 0; i < BATCH && created < TOTAL; i++) {
-        const div = document.createElement('div');
-        div.className = 'square';
-        fragment.appendChild(div);
-        created++;
-      }
-      container.appendChild(fragment);
-      fragment = document.createDocumentFragment();
-      if (created < TOTAL) {
-        // Yield to keep UI responsive
-        setTimeout(createBatch, 0);
-      } else {
-        console.log('Created', TOTAL, 'squares.');
-      }
-    }
-
-    // Start after page load
-    window.addEventListener('load', createBatch);
-  })();
-</script>
+    <header>
+        <h1>شبكة جدارية مليون سيلفي</h1>
+        <nav>
+            <ul>
+                <li><a href="#">الرئيسية</a></li>
+                <li><a href="#">المنظر</a></li>
+                <li><a href="#">اتصل</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="grid">
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+        </section>
+    </main>
 </body>
 </html>
