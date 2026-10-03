@@ -1,46 +1,61 @@
-// Firebase configuration (replace with your own config)
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
+```js
+/* ==================================================
+   1️⃣  Hide the loading overlay / modal backdrop
+   2️⃣  Ensure it disappears after page load
+   ================================================== */
+(function () {
+  // Utility to hide overlay elements once the page is ready
+  const hideLoadingOverlay = () => {
+    const overlays = document.querySelectorAll(
+      '.loading-overlay, .loading-backdrop, .modal-backdrop'
+    );
+    overlays.forEach(el => {
+      if (el) el.style.display = 'none';
+    });
+  };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+  // 1. Hide overlay on DOMContentLoaded (prevents flicker)
+  document.addEventListener('DOMContentLoaded', hideLoadingOverlay);
 
-// DOM Elements
-const canvas = document.getElementById('wallCanvas');
-const ctx = canvas.getContext('2d');
-const bookingModal = document.getElementById('bookingModal');
-const bookingForm = document.getElementById('bookingForm');
-const langBtn = document.getElementById('langBtn');
-const zoomInBtn = document.getElementById('zoomInBtn');
-const zoomOutBtn = document.getElementById('zoomOutBtn');
-const selectionBtn = document.getElementById('selectionBtn');
+  // 2. Double‑check after window load (full assets loaded)
+  window.addEventListener('load', () => {
+    // Small timeout to allow any async operations to finish
+    setTimeout(hideLoadingOverlay, 200);
+  });
 
-// Canvas state
-let scale = 1;
-let offsetX = 0;
-let offsetY = 0;
-let isPanning = false;
-let lastX, lastY;
+  /* ==================================================
+     3️⃣  Optional: Add a quick fade‑out effect for the overlay
+     ================================================== */
+  const applyFadeOut = () => {
+    const overlay = document.querySelector('.loading-overlay, .loading-backdrop, .modal-backdrop');
+    if (!overlay) return;
+    overlay.style.transition = 'opacity 0.5s ease-out';
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 500);
+  };
 
-// Grid constants
-const GRID_SIZE = 10000; // 1000 * 10
-const BOX_SIZE = 10;
-const TOTAL_BOXES = 1000000;
+  // Uncomment the line below if you prefer fade‑out over instant hide
+  // window.addEventListener('load', applyFadeOut);
 
-// Render visible grid
-function renderGrid() {
-    ctx.save();
-    ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#555'; // placeholder color for unbooked boxes
+  /* ==================================================
+     4️⃣  Prevent accidental horizontal scrolling on touch devices
+     ================================================== */
+  const preventHorizontalScroll = e => {
+    if (e.deltaX !== 0) {
+      e.preventDefault();
+    }
+  };
+  window.addEventListener('wheel', preventHorizontalScroll, { passive: false });
 
-    // Draw only visible boxes (lazy rendering)
-    const startX = Math.max(0, Math.floor(-offsetX / (scale * BOX_SIZE)));
+  /* ==================================================
+     5️⃣  Expose functions for debugging (optional)
+     ================================================== */
+  window.debug = {
+    hideLoadingOverlay,
+    applyFadeOut,
+    preventHorizontalScroll
+  };
+})();
+```
