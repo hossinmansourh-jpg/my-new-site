@@ -2599,15 +2599,20 @@ function setLanguage(lang) {
   const html = document.documentElement;
   html.lang = lang;
   html.dir = lang === 'ar' ? 'rtl' : 'ltr';
-  
+
   const arBtn = document.getElementById('langAr');
   const enBtn = document.getElementById('langEn');
-  
+
   if (arBtn) arBtn.classList.toggle('active', lang === 'ar');
   if (enBtn) enBtn.classList.toggle('active', lang === 'en');
-  
+
   applyLanguage(lang);
   localStorage.setItem('lang', lang);
+
+  // 🆕 تحديث الإحصائيات وجدول الصدارة فوراً عند تبديل اللغة
+  updateStats();
+  updateLeaderboard();
+
   drawGrid();
 }
 
