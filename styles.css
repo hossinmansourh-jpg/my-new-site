@@ -1,120 +1,103 @@
-/* Color Variables */
-:root {
-    --bg-primary: #0a0a0f;
-    --bg-secondary: #14141c;
-    --bg-tertiary: #2a2a35;
-    --gold-main: #d4a017;
-    --gold-light: #f5b301;
-    --blue-stat: #4a9eff;
-    --green-accept: #3a9a3a;
-    --red-reject: #9a3a3a;
-    --text-light: #f0f0f0;
+```css
+/* ==============================
+   1️⃣  Remove / hide loading overlay
+   ============================== */
+.loading-overlay,
+.loading-backdrop,
+.modal-backdrop {
+  /* If the overlay exists, hide it immediately */
+  display: none !important;
 }
 
-/* Global Styles */
-body, html {
-    margin: 0;
-    padding: 0;
-    background: var(--bg-primary);
-    color: var(--text-light);
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    overflow: hidden;
+/* ==============================
+   2️⃣  Responsive header and title
+   ============================== */
+header {
+  /* Keep header above other layers */
+  position: relative;
+  z-index: 100;
+  background: #fff;          /* Adjust as needed */
+  width: 100%;
+  padding: 1rem 2rem;        /* Adequate spacing */
+  box-sizing: border-box;
 }
 
-/* Header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    background: var(--bg-secondary);
+header h1,
+header .title {
+  /* Max-width ensures it never overflows the screen */
+  max-width: 100%;
+  margin: 0 auto;
+  /* Fluid font size: min 1.5rem, scales up to 3rem with viewport */
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
+  line-height: 1.2;
+  word-wrap: break-word; /* Prevent words from breaking layout */
 }
 
-.controls button {
-    margin-left: 0.5rem;
-    padding: 0.5rem;
-    background: var(--gold-main);
-    color: #000;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
+header .nav-buttons,
+header .action-buttons {
+  /* Flex layout to keep buttons aligned and responsive */
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.controls button:hover {
-    background: var(--gold-light);
+header button,
+header a.button {
+  /* Fluid button size, responsive padding */
+  padding: clamp(0.4rem, 1vw, 0.8rem) clamp(0.8rem, 2vw, 1.6rem);
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  white-space: nowrap;
+  /* Prevent overflow on small screens */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 0 1 auto;
 }
 
-/* Canvas Container */
-.canvas-container {
-    position: absolute;
-    top: 70px;
-    bottom: 80px;
-    left: 0;
-    right: 0;
-    overflow: hidden;
+/* ==============================
+   3️⃣  Prevent horizontal overflow
+   ============================== */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 }
 
-#wallCanvas {
-    width: 100%;
-    height: 100%;
-    background: var(--bg-tertiary);
-    cursor: grab;
+/* ==============================
+   4️⃣  Z-index hierarchy
+   ============================== */
+/* Modal windows (e.g., lightbox, dialogs) */
+.modal,
+.dialog,
+.popup,
+.custom-window {
+  position: relative;
+  z-index: 1000;  /* Above header and other content */
+  background: #fff;
+  /* Add other styles as needed */
 }
 
-/* Stats Bar */
-.stats-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--bg-secondary);
-    display: flex;
-    justify-content: space-around;
-    padding: 0.5rem;
-    font-size: 0.9rem;
+/* Canvas / background grid should stay behind everything */
+canvas,
+.grid-layer,
+.background-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;  /* Under header, modals, etc. */
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Avoid blocking interactions */
 }
 
-/* Modal */
-.modal.hidden {
-    display: none;
+/* Optional: ensure the main content sits above the canvas */
+.main-content,
+#content,
+#main {
+  position: relative;
+  z-index: 5;
+  /* Ensure it appears above the background layer but below modals */
 }
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.modal-content {
-    background: var(--bg-secondary);
-    padding: 1rem;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 400px;
-}
-.modal-content form label {
-    display: block;
-    margin-bottom: 0.5rem;
-}
-.modal-content form input, .modal-content form select {
-    width: 100%;
-    padding: 0.4rem;
-    margin-top: 0.2rem;
-}
-.modal-content form button {
-    margin-top: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: var(--gold-main);
-    border: none;
-    cursor: pointer;
-    color: #000;
-    border-radius: 4px;
-}
-.modal-content form button:hover {
-    background: var(--gold-light);
-}
+```
