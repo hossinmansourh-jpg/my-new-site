@@ -1,40 +1,141 @@
-```html
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <title>جدارية 1000×1000</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="module" src="script.js" defer></script>
+<meta charset="UTF-8">
+<title>نموذج حجز</title>
+<style>
+  body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f4f4f4;}
+  .modal{background:#fff;padding:20px;margin:50px auto;width:90%;max-width:400px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+  label{display:block;margin-top:10px;}
+  input[type=text],input[type=email],input[type=number]{width:100%;padding:8px;margin-top:5px;}
+  input[type=file]{margin-top:5px;}
+  button{margin-top:15px;padding:10px 20px;background:#28a745;color:#fff;border:none;border-radius:4px;}
+  #progress{display:none;margin-top:10px;}
+</style>
 </head>
 <body>
-    <div id="toolbar">
-        <button id="zoomInBtn">+ تكبير</button>
-        <button id="zoomOutBtn">- تصغير</button>
-        <button id="panBtn">السحب</button>
-        <button id="selectBtn">تحديد المربعات</button>
-    </div>
-    <canvas id="gridCanvas" width="2000" height="2000"></canvas>
-
-    <!-- Modal لعرض معلومات صاحب الصورة -->
-    <div id="infoModal" class="modal hidden">
-        <div class="modal-content">
-            <span id="closeInfo" class="close">&times;</span>
-            <h3>معلومات صاحب الصورة</h3>
-            <p id="ownerInfo"></p>
-        </div>
-    </div>
-
-    <!-- نموذج حجز -->
-    <div id="bookingForm" class="modal hidden">
-        <div class="modal-content">
-            <span id="closeBooking" class="close">&times;</span>
-            <h3>حجز مربعات مختارة</h3>
-            <p>عدد المربعات المختارة: <span id="selectedCount"></span></p>
-            <button id="confirmBooking">تأكيد الحجز</button>
-        </div>
-    </div>
+<div class="modal">
+  <h2>حجز مربعات</h2>
+  <form id="bookingForm">
+    <label>الاسم:
+      <input type="text" id="name" required>
+    </label>
+    <label>البريد الإلكتروني:
+      <input type="email" id="email" required>
+    </label>
+    <label>عدد المربعات:
+      <input type="number" id="boxes" min="1" value="1" required>
+    </label>
+    <label>الطريقة:
+      <select id="method" required>
+        <option value="cash">شام كاش</option>
+        <option value="usdt">USDT TRC20</option>
+      </select>
+    </label>
+    <label>السيلفي (HEIC/JPG):
+      <input type="file" id="selfie" accept="image/*" required>
+    </label>
+    <label>إيصال الدفع:
+      <input type="file" id="receipt" accept="image/*" required>
+    </label>
+    <div id="progress">جاري التحميل...</div>
+    <button type="submit">إرسال الطلب</button>
+  </form>
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.2.4/dist/heic2any.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.15/dist/browser-image-compression.js"></script>
+
+<script>
+  // Firebase config placeholder – replace with your own
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+
+  const form = document.getElementById('bookingForm');
+  const progress = document.getElementById('progress');
+
+  async function convertAndCompress(file) {
+    let imgBlob;
+    if (file.type === "image/heic" || file.type === "image/heif") {
+      const arrayBuffer = await file.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
+      imgBlob = await heic2any({blob: file, toType: "image/jpeg"});
+    } else {
+      imgBlob = file;
+    }
+    const compressed = await imageCompression(imgBlob, {
+      maxWidthOrHeight: 1200,
+      useWebWorker: true,
+      initialQuality: 0.85
+    });
+    return compressed;
+  }
+
+  async function uploadToImgBB(file) {
+    const apiKey = "YOUR_IMGBB_API_KEY";
+    const formData = new FormData();
+    formData.append('image', file);
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error('ImgBB upload failed');
+    return data.data.url;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    progress.style.display = 'block';
+    try {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const boxes = parseInt(document.getElementById('boxes').value, 10);
+      const method = document.getElementById('method').value;
+      const selfieFile = document.getElementById('selfie').files[0];
+      const receiptFile = document.getElementById('receipt').files[0];
+
+      const selfieProcessed = await convertAndCompress(selfieFile);
+      const receiptProcessed = await convertAndCompress(receiptFile);
+
+      const selfieURL = await uploadToImgBB(selfieProcessed);
+      const receiptURL = await uploadToImgBB(receiptProcessed);
+
+      const totalPrice = boxes * 1; // $1 per box
+
+      const booking = {
+        name,
+        email,
+        boxes,
+        method,
+        selfieURL,
+        receiptURL,
+        totalPrice,
+        status: 'pending',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      await db.collection('bookings').add(booking);
+      alert('تم إرسال الطلب بنجاح!');
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert('حدث خطأ: ' + err.message);
+    } finally {
+      progress.style.display = 'none';
+    }
+  });
+</script>
 </body>
 </html>
-```
