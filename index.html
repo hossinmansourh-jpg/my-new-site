@@ -1,50 +1,40 @@
 ```html
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جدارية مليون صورة سيلفي</title>
+    <title>جدارية 1000×1000</title>
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js" defer></script>
 </head>
 <body>
-    <!-- Overlay that hides while the page loads -->
-    <div id="loadingOverlay" class="overlay">
-        <span class="spinner"></span>
+    <div id="toolbar">
+        <button id="zoomInBtn">+ تكبير</button>
+        <button id="zoomOutBtn">- تصغير</button>
+        <button id="panBtn">السحب</button>
+        <button id="selectBtn">تحديد المربعات</button>
     </div>
+    <canvas id="gridCanvas" width="2000" height="2000"></canvas>
 
-    <!-- Main header -->
-    <header class="site-header">
-        <div class="logo">
-            <!-- Replace with your logo image or text -->
-            <h1>جدارية مليون صورة سيلفي</h1>
-        </div>
-        <div class="header-actions">
-            <button id="langToggle" class="lang-toggle">عربي / EN</button>
-            <div class="digital-badge">🖥️ التحدي الرقمي</div>
-        </div>
-    </header>
-
-    <!-- Main content -->
-    <main class="main-content">
-        <!-- Canvas placeholder (or any other main grid element) -->
-        <canvas id="mosaicCanvas" width="1200" height="800"></canvas>
-        <!-- Example content to illustrate overflow handling -->
-        <section class="gallery">
-            <h2>الأعمال الفنية</h2>
-            <p>عرض الصور يتألف من ملايين السيلفي.</p>
-        </section>
-    </main>
-
-    <!-- Example modal (hidden by default) -->
-    <div id="exampleModal" class="modal" aria-hidden="true">
+    <!-- Modal لعرض معلومات صاحب الصورة -->
+    <div id="infoModal" class="modal hidden">
         <div class="modal-content">
-            <p>هذا نموذج من النافذة المنبثقة.</p>
-            <button id="closeModal">إغلاق</button>
+            <span id="closeInfo" class="close">&times;</span>
+            <h3>معلومات صاحب الصورة</h3>
+            <p id="ownerInfo"></p>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- نموذج حجز -->
+    <div id="bookingForm" class="modal hidden">
+        <div class="modal-content">
+            <span id="closeBooking" class="close">&times;</span>
+            <h3>حجز مربعات مختارة</h3>
+            <p>عدد المربعات المختارة: <span id="selectedCount"></span></p>
+            <button id="confirmBooking">تأكيد الحجز</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 ```
